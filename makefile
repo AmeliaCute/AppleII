@@ -65,3 +65,12 @@ runf: $(OS_BIN)
 # Clean all build artifacts
 clean:
 	rm -rf $(BIN_DIR)/*.bin $(BIN_DIR)/*.o $(OS_BIN)
+
+install:
+	sudo apt-get update
+	sudo apt-get install -y \
+		qemu-utils \
+		qemu-system-x86 \
+		qemu-system-gui \
+		binutils-multiarch \
+		nasm
