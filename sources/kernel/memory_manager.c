@@ -1,7 +1,7 @@
 #include "memory_manager.h"
 
 uint8_t memory_pool[KERNEL_MEMORY_POOL_SIZE];
-Block* free_list = nullptr;
+Block* free_list = NULL;
 
 // Function to align a given size to the nearest multiple of the kernel's memory alignment size.
 size_t align(size_t size)
@@ -24,7 +24,7 @@ void k_memory_init()
 
     // The size of the first free block is set to the total size of the pool minus the size of the Block header.
     free_list->size = KERNEL_MEMORY_POOL_SIZE - (aligned_memory - (uintptr_t) memory_pool) - sizeof(Block);
-    free_list->next = nullptr;
+    free_list->next = NULL;
     free_list->free = 1;
 }
 
@@ -36,9 +36,9 @@ void* malloc(size_t size)
 
     // Traverse the free list to find a suitable block for allocation.
     Block* current = free_list;
-    Block* previous = nullptr;
+    Block* previous = NULL;
 
-    while (current != nullptr)
+    while (current != NULL)
     {
         // If the current block is free and large enough to hold the requested size.
         if(current->free && current->size >= size)
@@ -68,15 +68,15 @@ void* malloc(size_t size)
         current = current->next;
     }
 
-    // If no suitable block is found, return nullptr to indicate failure.
-    return nullptr;
+    // If no suitable block is found, return NULL to indicate failure.
+    return NULL;
 }
 
 // Custom free function to release previously allocated memory.
 void free(void* ptr)
 {
     // If the pointer is null, there's nothing to free.
-    if(ptr == nullptr) return;
+    if(ptr == NULL) return;
 
     // Get the Block header of the given pointer by subtracting the size of the Block from the pointer.
     Block* block = (Block*) ((uint8_t*) ptr - sizeof(Block));
@@ -85,7 +85,7 @@ void free(void* ptr)
 
     // Traverse the free list to coalesce adjacent free blocks into one larger block.
     Block* current = free_list;
-    while(current != nullptr && current->next != nullptr)
+    while(current != NULL && current->next != NULL)
     {
         // If the current block is adjacent to the next block (i.e., they are contiguous in memory),
         // merge them into a single block.

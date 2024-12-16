@@ -1,4 +1,3 @@
-
 # Set paths
 BIN_DIR = bin
 SRC_DIR = sources
@@ -7,11 +6,11 @@ SRC_DIR = sources
 ASM_BOOTLOADER = $(SRC_DIR)/bootloader.asm
 ASM_KERNEL_ENTRY = $(SRC_DIR)/kernel_entry.asm
 ASM_EMULFIX = $(SRC_DIR)/emulfix.asm
-CPP_SOURCES = $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/**/*.cpp) # All .cpp files in sources and subdirectories
-HEADERS = $(wildcard $(SRC_DIR)/*.h $(SRC_DIR)/**/*.h) # All .h files in sources and subdirectories
+C_SOURCES = $(wildcard $(SRC_DIR)/*.c $(SRC_DIR)/**/*.c)  # All .c files in sources and subdirectories
+HEADERS = $(wildcard $(SRC_DIR)/*.h $(SRC_DIR)/**/*.h)  # All .h files in sources and subdirectories
 
-# Object files generated from each .cpp source file
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BIN_DIR)/%.o, $(CPP_SOURCES))
+# Object files generated from each .c source file
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(BIN_DIR)/%.o, $(C_SOURCES))
 
 # Output files
 BOOT_BIN = $(BIN_DIR)/boot.bin
@@ -39,8 +38,8 @@ $(BOOT_BIN): $(ASM_BOOTLOADER)
 $(KERNEL_ENTRY_O): $(ASM_KERNEL_ENTRY)
 	$(NASM) $< -f elf -o $@
 
-# Compile each .cpp file into an object file in the bin directory
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS)
+# Compile each .c file into an object file in the bin directory
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $< -o $@
 
 # Assemble emulfix (zeroes filler)
@@ -61,7 +60,7 @@ run: $(OS_BIN)
 
 # Run the OS in QEMU in fullscreen
 runf: $(OS_BIN)
-	$(QEMU) -k -full-screen -drive format=raw,file=$(OS_BIN),index=0,if=floppy -m 128M 
+	$(QEMU) -k -full-screen -drive format=raw,file=$(OS_BIN),index=0,if=floppy -m 128M
 
 # Clean all build artifacts
 clean:

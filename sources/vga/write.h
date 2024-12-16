@@ -5,7 +5,7 @@
 #include "cursor.h"
 
 void k_print_char(int* position, int color, const char key);
-void print(int* position, int color, const char* text);
+void old_print(int* position, int color, const char* text);
 void print(const char* text);
 void clear_screen();
 void k_scroll_screen();

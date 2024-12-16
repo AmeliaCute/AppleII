@@ -28,7 +28,7 @@ void k_init_component_manager()
 void* k_component_get(unsigned int index)
 {
     void* data = kernel_components[index].data;
-    if(!data) return nullptr;
+    if(!data) return NULL;
 
     return data;
 }

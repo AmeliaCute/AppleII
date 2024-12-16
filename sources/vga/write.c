@@ -16,7 +16,7 @@ void print(const char* text)
     vga_c->cursor_position = position;
 }
 
-void print(int* position, int color, const char* text)
+void old_print(int* position, int color, const char* text)
 {
     if(!text) return;
     for(int i = 0; text[i] != 0x00; ++i)
