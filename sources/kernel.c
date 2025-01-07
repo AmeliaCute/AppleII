@@ -16,12 +16,21 @@ int k_test_init()
     if(!test_c) return COMPONENT_NULL;
 
     TestComponent* test_c2 = (TestComponent*)k_component_get(0);
-
     while(test_c->randomint32 != 0x9438)
     {
         test_c2->randomint32++;
     }
 
+    int* malloc_test = (int*) malloc(sizeof(int*));
+    if(!malloc_test) return COMPONENT_NULL;
+
+    while(*malloc_test != 0x1234)
+    {
+        *malloc_test++;
+    }
+
+    free(malloc_test);
+    print("Test passed switching..\n");
     return 0;
 }
 
@@ -42,20 +51,13 @@ void main()
     enable_cursor(10,13);
     k_init_component_manager();
     
-
     TestComponent* test = (TestComponent*)k_component_get(0);
-
     VgaComponent* vga = (VgaComponent*)k_component_get(1);
     if(!vga) k_kernel_panic();
     int COLOR = vga->color;
 
     k_memory_init();
-    const char* testAlloc = (const char*) malloc(7 * sizeof(char)); 
-    if(!testAlloc) k_kernel_panic();
-    strncpy((char*)testAlloc, "retete", 7);
-
-    print(testAlloc);
-    free((void*)testAlloc);
+    k_test_init();
 
     while(!PANIC_FLAG)
     {
